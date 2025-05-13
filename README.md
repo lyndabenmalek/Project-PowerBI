@@ -16,14 +16,7 @@ Talend pour l'extraction, la transformation et le chargement (ETL) des données,
 Power BI pour la visualisation interactive des données, permettant une analyse approfondie des performances financières et la détection d'anomalies.
 Ce projet m’a permis de combiner data, finance et expérience utilisateur, dans un contexte métier concret.
 
-projet/
-├── backend-flask/          # Application Flask
-│   ├── app.py        # API Flask
-│   ├── models/       # Modèles ML
-│   └── templates/    # Templates Flask (pour la version web)
-└── frontend-aNGULAR/         # Application Angular
-    ├── src/          # Code source Angular
-    └── ...
+
 Prérequis
 Backend (Flask)
 
