@@ -1,9 +1,16 @@
-Vision360 x Monoprix : améliorer les performances financières et la satisfaction client 
-Dans le cadre d’un projet appliqué à Monoprix, j’ai développé Vision360, une solution web intelligente permettant :
+Vision360 x Monoprix : améliorer les performances financières et la satisfaction client
+
+Dans le cadre d’un projet appliqué à Monoprix,  une solution web intelligente développé Vision360 permettant :
+
 ✅ Le suivi des indicateurs financiers (dépenses, remises, budgets, litiges...)
+
  🔍 La détection automatique d’anomalies pour alerter en cas de dérives
+ 
  😊 L’amélioration de la satisfaction client via un meilleur pilotage des tickets internes
-🌐 Développée avec Angular (frontend) et Flask (backend), Vision360 permet aux décideurs de prendre les bonnes décisions, au bon moment, grâce à une interface intuitive et des outils d’analyse puissants (recherche, filtrage, export Excel...).
+ 
+🌐 Développée avec Angular (frontend) et Flask (backend), Vision360 permet aux décideurs de prendre les bonnes décisions, 
+au bon moment, grâce à une interface intuitive et des outils d’analyse puissants (recherche, filtrage, export Excel...).
+
 🛠️ Les outils utilisés :
 Talend pour l'extraction, la transformation et le chargement (ETL) des données, assurant une intégration fluide entre les différentes sources d'information.
 Power BI pour la visualisation interactive des données, permettant une analyse approfondie des performances financières et la détection d'anomalies.
