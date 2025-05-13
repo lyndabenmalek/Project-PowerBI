@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Outil de prédiction pour l'efficacité des remises" />
+    <meta name="author" content="Vision360°" />
+    <title>Vision360° - Prédiction de remises</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" />
+    <!-- Font Awesome icons -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <!-- Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+        .container {
+            max-width: 800px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #ffc800;;
+            font-weight: bold;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .result-box {
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .result-box.success {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+        }
+        .result-box.danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c2c7;
+        }
+        .result-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .success .result-title {
+            color: #0f5132;
+        }
+        .danger .result-title {
+            color: #842029;
+        }
+        .probability-bar {
+            height: 25px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .submit-btn {
+            background-color: #ffc800;;
+            border: none;
+            padding: 10px 30px;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #ffc800;;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-section-title {
+            color: #0d0d0e;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+    </style>
+
+
+
+</head>
+
+
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="index">Vision360°</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="dash">Dashboard</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                AI tools
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item active" href="#">Prédiction</a></li>
+                                <li><a class="dropdown-item" href="cluster">Clustering</a></li>
+                                <li><a class="dropdown-item" href="ML">Dashboard ML</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section  >
+        <div class="container">
+            <div class="header">
+                <h1>Prédiction de Retard de Livraison</h1>
+                <p class="text-muted">Entrez les informations sur la commande pour prédire si la livraison sera en retard</p>
+            </div>
+            
+            <form method="POST" action="/classification">
+                <div class="form-section">
+                    <h3 class="form-section-title">Informations sur le traitement</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="approval_delay_hours" class="form-label">Délai d'approbation (heures)</label>
+                            <input type="number" step="0.1" class="form-control" id="approval_delay_hours" name="approval_delay_hours" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="carrier_handling_days" class="form-label">Jours de traitement transporteur</label>
+                            <input type="number" step="0.1" class="form-control" id="carrier_handling_days" name="carrier_handling_days" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="transit_days" class="form-label">Jours de transit</label>
+                            <input type="number" step="0.1" class="form-control" id="transit_days" name="transit_days" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="total_estimated_days" class="form-label">Total jours estimés</label>
+                            <input type="number" step="0.1" class="form-control" id="total_estimated_days" name="total_estimated_days" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-section-title">Informations sur l'achat</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="purchase_day_of_week" class="form-label">Jour de la semaine</label>
+                            <select class="form-select" id="purchase_day_of_week" name="purchase_day_of_week" required>
+                                <option value="" disabled selected>Sélectionnez le jour</option>
+                                <option value="0">Lundi</option>
+                                <option value="1">Mardi</option>
+                                <option value="2">Mercredi</option>
+                                <option value="3">Jeudi</option>
+                                <option value="4">Vendredi</option>
+                                <option value="5">Samedi</option>
+                                <option value="6">Dimanche</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="purchase_month" class="form-label">Mois</label>
+                            <select class="form-select" id="purchase_month" name="purchase_month" required>
+                                <option value="" disabled selected>Sélectionnez le mois</option>
+                                <option value="1">Janvier</option>
+                                <option value="2">Février</option>
+                                <option value="3">Mars</option>
+                                <option value="4">Avril</option>
+                                <option value="5">Mai</option>
+                                <option value="6">Juin</option>
+                                <option value="7">Juillet</option>
+                                <option value="8">Août</option>
+                                <option value="9">Septembre</option>
+                                <option value="10">Octobre</option>
+                                <option value="11">Novembre</option>
+                                <option value="12">Décembre</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="purchase_hour" class="form-label">Heure d'achat (0-23)</label>
+                            <input type="number" min="0" max="23" class="form-control" id="purchase_hour" name="purchase_hour" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="purchase_season" class="form-label">Saison</label>
+                            <select class="form-select" id="purchase_season" name="purchase_season" required>
+                                <option value="" disabled selected>Sélectionnez la saison</option>
+                                <option value="1">Hiver (Dec-Fev)</option>
+                                <option value="2">Printemps (Mar-Mai)</option>
+                                <option value="3">Été (Juin-Août)</option>
+                                <option value="4">Automne (Sep-Nov)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg submit-btn">Prédire le retard</button>
+                </div>
+            </form>
+            
+            {% if result %}
+            <div class="result-box {% if result.is_late %}danger{% else %}success{% endif %}">
+                <div class="result-title">
+                    {% if 'error' in result %}
+                        Erreur
+                    {% else %}
+                        {{ result.prediction_label }}
+                    {% endif %}
+                </div>
+                
+                {% if 'error' in result %}
+                    <p>{{ result.error }}</p>
+                {% else %}
+                    <p>Notre modèle prédit que cette commande sera 
+                        {% if result.is_late %}
+                            <strong>en retard</strong>
+                        {% else %}
+                            <strong>livrée à temps</strong>
+                        {% endif %}
+                    </p>
+                    
+                    <div class="probability-container">
+                        <p>Probabilité de retard: <strong>{{ result.probability }}%</strong></p>
+                        <div class="progress probability-bar">
+                            <div class="progress-bar {% if result.probability > 70 %}bg-danger{% elif result.probability > 30 %}bg-warning{% else %}bg-success{% endif %}" 
+                                 role="progressbar" 
+                                 style="width:50%;" 
+                                 aria-valuenow="{{ result.probability }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                                {{ result.probability }}%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <p class="mb-0">
+                            {% if result.is_late %}
+                                <strong>Recommandation :</strong> Envisagez d'informer le client du risque de retard potentiel.
+                            {% else %}
+                                <strong>Recommandation :</strong> La livraison semble être en bonne voie.
+                            {% endif %}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="container">
+            <h3>Comment interpréter les résultats ?</h3>
+            <ul>
+                <li><strong>Livraison à temps :</strong> Notre modèle prédit que la commande sera livrée dans les délais estimés.</li>
+                <li><strong>Retard de livraison :</strong> Notre modèle a détecté un risque significatif que cette commande soit livrée en retard.</li>
+                <li><strong>Probabilité :</strong> Le pourcentage indique le niveau de confiance de la prédiction du retard.</li>
+            </ul>
+            <p>Ce modèle est basé sur l'analyse de données historiques de livraison et utilise un algorithme Random Forest pour les prédictions.</p>
+        </div>
+        </section>
+    </body>
+    </html>
+
+
+   
+    

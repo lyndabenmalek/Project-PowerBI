@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Outil de prédiction pour l'efficacité des remises" />
+    <meta name="author" content="Vision360°" />
+    <title>Vision360° - Prédiction de remises</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" />
+    <!-- Font Awesome icons -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <!-- Animation CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+    <style>
+        .prediction-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .prediction-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+        }
+        
+        .form-control:focus {
+            border-color: #ffc800;
+            box-shadow: 0 0 0 0.25rem rgba(255, 200, 0, 0.25);
+        }
+        
+        .result-area {
+            min-height: 120px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .result-area.has-result {
+            background-color: #f0f7ff;
+            border-left: 4px solid #494a4b;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            color:  #ffc800;
+            margin-bottom: 8px;
+        }
+        
+        .result-value {
+            font-size: 1.25rem;
+            color: #0c0c06;
+            font-weight: 500;
+        }
+        
+        .chart-container {
+            height: 200px;
+            margin-top: 20px;
+        }
+        
+        .input-group-text {
+            background-color: #ffc800;
+            color: #212529;
+            border: 1px solid #ffc800;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner-border {
+            color: #ffc800;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="index">Vision360°</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ms-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="dash">Dashboard</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            AI tools
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="#">Prédiction</a></li>
+                            <li><a class="dropdown-item" href="cluster">Clustering</a></li>
+                            <li><a class="dropdown-item" href="ML">Dashboard ML</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- <section class="page-section" id="contact"></section> -->
+    <section  id="contact">
+        <div class="container">
+            <div class="text-center animate__animated animate__fadeIn">
+                <h2 class="section-heading text-uppercase">Prédiction de remises</h2>
+                <h3 class="section-subheading text-muted">Prédisez le montant de remise qui sera utilisé en fonction des offres proposées</h3>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="prediction-card animate__animated animate__fadeInUp">
+                        <form id="predictionForm" action="/predict" method="post">
+                            <div class="row align-items-stretch mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="discountoffered" class="form-label">Remise offerte</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                            <input class="form-control" id="discountoffered" type="number" placeholder="Montant de la remise offerte" step="0.01" name="discountoffered" required value="" min="0" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="discountused" class="form-label">Remise utilisée précédemment</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-percent"></i></span>
+                                            <input class="form-control" id="discountused" type="number" placeholder="Montant de la remise utilisée" step="0.01" name="discountused" required value="" min="0" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">Résultats de la prédiction</label>
+                                        <div class="result-area {{ 'has-result' if prediction_text else '' }}">
+                                            <div id="predictionResults">
+                                                {% if prediction_text %}
+                                                <div class="result-label">Efficacité de la remise:</div>
+                                                <div class="result-value">{{ prediction_text }}</div>
+                                                
+                                                {% if predicted_dollars %}
+                                                <div class="result-label mt-3">Estimation en valeur:</div>
+                                                <div class="result-value">{{ predicted_dollars }}</div>
+                                                {% endif %}
+                                                {% else %}
+                                                <div class="text-muted text-center pt-4">
+                                                    Remplissez le formulaire et cliquez sur "Prédire" pour obtenir les résultats
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">
+                                    <i class="fas fa-chart-line me-2"></i>Prédire
+                                </button>
+                                <button class="btn btn-outline-secondary btn-xl text-uppercase ms-2" id="resetButton" type="reset">
+                                    <i class="fas fa-redo me-2"></i>Réinitialiser
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Graphique explicatif -->
+                    <!-- <div class="prediction-card mt-4 animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                        <h4 class="text-center mb-3">Visualisation de la prédiction</h4>
+                        <div id="chart" class="chart-container">
+                           
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer-->
+    <!-- <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-start">Copyright &copy; Vision360° 2025</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="link-dark text-decoration-none me-3" href="#!">Confidentialité</a>
+                    <a class="link-dark text-decoration-none" href="#!">Conditions d'utilisation</a>
+                </div>
+            </div>
+        </div>
+    </footer> -->
+    
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+   <!--  <script>
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialisation des tooltips Bootstrap
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Graphique simple pour illustrer la relation
+            var ctx = document.createElement('canvas');
+            document.getElementById('chart').appendChild(ctx);
+            
+            var chart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Relation entre remise offerte et remise utilisée',
+                        data: [
+                            { x: 5, y: 3 },
+                            { x: 10, y: 7 },
+                            { x: 15, y: 10 },
+                            { x: 20, y: 12 },
+                            { x: 25, y: 15 },
+                            { x: 30, y: 17 }
+                        ],
+                        backgroundColor: 'rgba(255, 200, 0, 0.6)',
+                        borderColor: '#ffc800',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Remise offerte'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Remise utilisée'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Animation des résultats
+            const form = document.getElementById('predictionForm');
+            const results = document.getElementById('predictionResults');
+            const loading = document.getElementById('loading');
+            
+            form.addEventListener('submit', function(e) {
+                // Pour une démonstration de l'effet de chargement
+                // Dans un environnement réel, vous utiliseriez AJAX à la place
+                if (!e.submitter.classList.contains('ajax-demo')) {
+                    return; // Continuer avec la soumission normale du formulaire
+                }
+                
+                e.preventDefault();
+                
+                // Afficher l'animation de chargement
+                results.style.display = 'none';
+                loading.style.display = 'block';
+                
+                // Simuler un délai de traitement
+                setTimeout(function() {
+                    // Cacher l'animation, afficher les résultats
+                    loading.style.display = 'none';
+                    results.style.display = 'block';
+                    
+                    // Ici vous pourriez mettre à jour les résultats via AJAX
+                    
+                    // Ajouter la classe pour le style des résultats
+                    document.querySelector('.result-area').classList.add('has-result');
+                }, 1500);
+            });
+        });
+    </script> -->
+
+
+
+
+<script>
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Référence au bouton de réinitialisation
+    const resetButton = document.getElementById('resetButton');
+    // Référence au formulaire
+    const predictionForm = document.getElementById('predictionForm');
+    // Référence à la zone de résultats
+    const resultArea = document.querySelector('.result-area');
+    // Référence à la zone d'affichage des résultats
+    const predictionResults = document.getElementById('predictionResults');
+    
+    // Gestionnaire d'événements pour le bouton de réinitialisation
+    resetButton.addEventListener('click', function(e) {
+        // Empêcher le comportement par défaut (bien que ce ne soit pas nécessaire pour un bouton de type "reset")
+        // e.preventDefault();
+        
+        // Réinitialiser le formulaire
+        predictionForm.reset();
+        
+        // Retirer la classe de style des résultats
+        resultArea.classList.remove('has-result');
+        
+        // Effacer le contenu des résultats et afficher le message par défaut
+        predictionResults.innerHTML = `
+            <div class="text-muted text-center pt-4">
+                Remplissez le formulaire et cliquez sur "Prédire" pour obtenir les résultats
+            </div>
+        `;
+    });
+});
+
+</script> 
+
+
+</body>
+</html>

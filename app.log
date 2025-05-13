@@ -1,0 +1,36 @@
+2025-05-12 22:15:09,698 - __main__ - ERROR - Erreur lors du chargement du modèle: [Errno 2] No such file or directory: 'models/discount_utilization_model.pkl'
+2025-05-12 22:15:09,735 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.31.180:5000
+2025-05-12 22:15:09,735 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-12 22:15:09,739 - werkzeug - INFO -  * Restarting with stat
+2025-05-12 22:15:10,519 - __main__ - ERROR - Erreur lors du chargement du modèle: [Errno 2] No such file or directory: 'models/discount_utilization_model.pkl'
+2025-05-12 22:15:10,544 - werkzeug - WARNING -  * Debugger is active!
+2025-05-12 22:15:10,547 - werkzeug - INFO -  * Debugger PIN: 141-884-401
+2025-05-12 22:15:17,101 - werkzeug - INFO - 192.168.31.180 - - [12/May/2025 22:15:17] "[33mGET / HTTP/1.1[0m" 404 -
+2025-05-12 22:15:17,290 - werkzeug - INFO - 192.168.31.180 - - [12/May/2025 22:15:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-12 22:31:41,084 - werkzeug - INFO -  * Detected change in 'c:\\Users\\lynda\\OneDrive\\Desktop\\ProjetPIAngular+Flask\\Backend-Flask\\app.py', reloading
+2025-05-12 22:31:41,210 - werkzeug - INFO -  * Restarting with stat
+2025-05-12 22:31:42,241 - __main__ - ERROR - Erreur lors du chargement du modèle: [Errno 2] No such file or directory: 'models/discount_utilization_model.pkl'
+2025-05-12 22:31:42,257 - werkzeug - WARNING -  * Debugger is active!
+2025-05-12 22:31:42,259 - werkzeug - INFO -  * Debugger PIN: 141-884-401
+2025-05-12 22:32:13,675 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:13] "[33mGET / HTTP/1.1[0m" 404 -
+2025-05-12 22:32:13,697 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:13] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-12 22:32:22,580 - __main__ - ERROR - Erreur lors du chargement du modèle: [Errno 2] No such file or directory: 'models/discount_utilization_model.pkl'
+2025-05-12 22:32:22,603 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-12 22:32:22,603 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-12 22:32:22,604 - werkzeug - INFO -  * Restarting with stat
+2025-05-12 22:32:23,232 - __main__ - ERROR - Erreur lors du chargement du modèle: [Errno 2] No such file or directory: 'models/discount_utilization_model.pkl'
+2025-05-12 22:32:23,241 - werkzeug - WARNING -  * Debugger is active!
+2025-05-12 22:32:23,245 - werkzeug - INFO -  * Debugger PIN: 141-884-401
+2025-05-12 22:32:24,775 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:24] "[33mGET / HTTP/1.1[0m" 404 -
+2025-05-12 22:32:24,933 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:24] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-12 22:32:31,979 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:31] "[35m[1mGET /pred HTTP/1.1[0m" 500 -
+2025-05-12 22:32:32,116 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:32] "GET /pred?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-05-12 22:32:32,123 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:32] "GET /pred?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-05-12 22:32:32,172 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:32] "GET /pred?__debugger__=yes&cmd=resource&f=console.png&s=AIuhRvSmMRykqXflz86N HTTP/1.1" 200 -
+2025-05-12 22:32:32,177 - werkzeug - INFO - 127.0.0.1 - - [12/May/2025 22:32:32] "GET /pred?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-05-12 22:36:08,654 - werkzeug - INFO -  * Detected change in 'c:\\Users\\lynda\\OneDrive\\Desktop\\ProjetPIAngular+Flask\\Backend-Flask\\app.py', reloading
+2025-05-12 22:36:08,749 - werkzeug - INFO -  * Restarting with stat

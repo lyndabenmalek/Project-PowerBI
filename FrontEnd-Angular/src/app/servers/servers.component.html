@@ -1,0 +1,21 @@
+<label> Server Name </label>
+<br>
+<input type="text" [(ngModel)]="serverName">
+<br>
+<!--<p> {{ serverName }} </p>-->
+<button (click)="onServerCreation()" [disabled]="!allowServerCreation">Add Server</button>
+<!--<p> {{ serverCreationStatus }}</p>-->
+<div [ngSwitch]="serverCreationStatus">
+  <p *ngSwitchCase="'created'">
+    Server was created!!
+  </p>
+  <p *ngSwitchCase="'notCreated'">
+    No server was created!!
+  </p>
+  <p *ngSwitchDefault>
+    Unknown Status
+  </p>
+
+</div>
+<app-server *ngFor="let server of servers"></app-server>
+

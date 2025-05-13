@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Vision360° - Solution intelligente d'analyse de produits" />
+        <meta name="author" content="Vision360° Team" />
+        <title>Vision360° - Data Intelligence</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" />
+        <!-- Font Awesome icons -->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- AOS Animation Library -->
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+        <style>
+            /* Custom styles */
+            :root {
+                --primary-color: #ffc800;;
+                --secondary-color: #ffc800;
+                --accent-color: #ffc800;
+                --background-color: #f8f9fa;
+                --dark-bg: #212529;
+                --light-bg: #ffffff;
+                --text-light: #f8f9fa;
+                --text-dark: #212529;
+                --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                --transition: all 0.3s ease;
+            }
+
+            body {
+                background-color: var(--background-color);
+                scroll-behavior: smooth;
+            }
+
+            /* Enhanced navbar */
+            #mainNav {
+                background-color: rgba(33, 37, 41, 0.95);
+                backdrop-filter: blur(10px);
+                transition: var(--transition);
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+            #mainNav .navbar-brand {
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 700;
+                color: var(--accent-color);
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+
+            #mainNav .navbar-brand span {
+                color: var(--text-light);
+            }
+
+            #mainNav .nav-link {
+                transition: var(--transition);
+                position: relative;
+                padding: 0.5rem 1rem;
+            }
+
+            #mainNav .nav-link:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                background: var(--accent-color);
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                transition: var(--transition);
+            }
+
+            #mainNav .nav-link:hover:after {
+                width: 70%;
+            }
+
+            .dropdown-menu {
+                background-color: rgba(33, 37, 41, 0.95);
+                backdrop-filter: blur(10px);
+                border: none;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+            }
+
+            .dropdown-item {
+                color: var(--text-light);
+                transition: var(--transition);
+                padding: 10px 20px;
+            }
+
+            .dropdown-item:hover {
+                background-color: rgba(72, 202, 228, 0.2);
+                color: var(--accent-color);
+            }
+
+            /* Section styling */
+            .page-section {
+                padding: 6rem 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                position: relative;
+            }
+
+            .section-heading {
+                margin-bottom: 1rem;
+                position: relative;
+                display: inline-block;
+            }
+
+            .section-heading:after {
+                content: '';
+                position: absolute;
+                width: 70%;
+                height: 3px;
+                background: var(--accent-color);
+                bottom: -10px;
+                left: 15%;
+            }
+
+            .section-subheading {
+                margin-bottom: 3rem;
+                font-style: italic;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            /* Card enhancements */
+            .form-card {
+                background-color: var(--light-bg);
+                border-radius: 12px;
+                box-shadow: var(--shadow);
+                padding: 2rem;
+                transition: var(--transition);
+                margin-bottom: 2rem;
+            }
+
+            .form-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .form-control {
+                border-radius: 8px;
+                border: 1px solid #dee2e6;
+                padding: 12px 15px;
+                transition: var(--transition);
+            }
+
+            .form-control:focus {
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 0.25rem rgba(72, 202, 228, 0.25);
+            }
+
+            .btn-primary {
+                background-color: var(--primary-color);
+                border-color: var(--primary-color);
+                padding: 12px 25px;
+                border-radius: 8px;
+                font-weight: 600;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                transition: var(--transition);
+            }
+
+            .btn-primary:hover {
+                background-color: var(--secondary-color);
+                border-color: var(--secondary-color);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 119, 182, 0.3);
+            }
+
+            /* Recommendation cards */
+            .recommendation-card {
+                border-radius: 10px;
+                overflow: hidden;
+                transition: var(--transition);
+                border: none;
+            }
+
+            .recommendation-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .recommendation-card .card-body {
+                padding: 1.5rem;
+            }
+
+            .recommendation-card .card-title {
+                font-weight: 600;
+                margin-bottom: 1rem;
+                border-bottom: 2px solid var(--accent-color);
+                padding-bottom: 0.75rem;
+            }
+
+            .recommendation-card .badge {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            /* Typeahead styling */
+            .position-relative {
+                position: relative;
+            }
+
+            .typeahead-list {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                border-radius: 0 0 8px 8px;
+                box-shadow: var(--shadow);
+                max-height: 250px;
+                overflow-y: auto;
+                z-index: 1000;
+                display: none;
+            }
+
+            .typeahead-item {
+                padding: 10px 15px;
+                cursor: pointer;
+                transition: var(--transition);
+                border-bottom: 1px solid #eee;
+            }
+
+            .typeahead-item:hover {
+                background-color: rgba(72, 202, 228, 0.1);
+            }
+
+            /* Spinner styling */
+            .spinner-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+            }
+
+            .spinner-border {
+                color: var(--primary-color);
+            }
+
+            /* Results section */
+            #resultsSection {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: var(--transition);
+            }
+
+            #resultsSection.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Cluster result display */
+            .cluster-result {
+                background-color: var(--light-bg);
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: var(--shadow);
+                margin: 2rem 0;
+                transition: var(--transition);
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            .cluster-result.show {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            .cluster-badge {
+                padding: 0.5rem 1rem;
+                border-radius: 50px;
+                font-weight: 600;
+                font-size: 1rem;
+                display: inline-block;
+                margin-top: 1rem;
+            }
+
+            .cluster-badge.premium {
+                background-color: #ffd700;
+                color: #212529;
+            }
+
+            .cluster-badge.quality {
+                background-color: #4caf50;
+                color: white;
+            }
+
+            .cluster-badge.low {
+                background-color: #f44336;
+                color: white;
+            }
+            
+            /* Wave animation */
+            .wave-container {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                overflow: hidden;
+            }
+            
+            .wave {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%2348cae4" fill-opacity="0.2" d="M0,160L48,181.3C96,203,192,245,288,234.7C384,224,480,160,576,149.3C672,139,768,181,864,202.7C960,224,1056,224,1152,197.3C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+                background-size: cover;
+                background-repeat: no-repeat;
+                opacity: 0.8;
+                animation: wave 20s linear infinite;
+            }
+            
+            .wave:nth-child(2) {
+                bottom: 10px;
+                opacity: 0.5;
+                animation: wave 15s linear infinite;
+            }
+            
+            .wave:nth-child(3) {
+                bottom: 20px;
+                opacity: 0.2;
+                animation: wave 10s linear infinite;
+            }
+            
+            @keyframes wave {
+                0% {
+                    background-position-x: 0;
+                }
+                100% {
+                    background-position-x: 1440px;
+                }
+            }
+        </style>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="index">Vision<span>360°</span></a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ms-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="dash">Dashboard</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                AI tools
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="pred">Prediction</a></li>
+                              <li><a class="dropdown-item" href="#cluster">Clustering</a></li>
+                              <li><a class="dropdown-item" href="#recommendation">Système de recommandation</a></li>
+                            </ul>
+                          </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+       
+        <!-- Clustering Section-->
+        <section class="page-section" id="cluster">
+            <div class="wave-container">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            <div class="container">
+              <div class="text-center" data-aos="fade-down">
+                <h2 class="section-heading text-uppercase">Classification par Clustering</h2>
+                <h3 class="section-subheading text-muted">
+                  Entrez les caractéristiques du produit pour découvrir sa catégorie basée sur notre algorithme d'intelligence artificielle.
+                </h3>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-lg-8">
+                  <div class="form-card" data-aos="fade-up">
+                    <form id="clusterForm">
+                      <div class="row align-items-stretch mb-4">
+                        <div class="col-md-12 mb-3">
+                          <div class="form-group">
+                            <label for="productName" class="mb-1"><i class="fas fa-tag me-2"></i>Nom du Produit</label>
+                            <input class="form-control" id="productName" type="text"
+                                 placeholder="Entrez le nom du produit" required />
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <div class="form-group">
+                            <label for="Note" class="mb-1"><i class="fas fa-star me-2"></i>Note du Produit</label>
+                            <input class="form-control" id="Note" type="number" step="0.1" min="0" max="5"
+                                 placeholder="Entre 0 et 5" required />
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <div class="form-group">
+                            <label for="Prix" class="mb-1"><i class="fas fa-euro-sign me-2"></i>Prix</label>
+                            <input class="form-control" id="Prix" type="number" min="0"
+                                 placeholder="Entrez le prix" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cluster-result" id="clusterResultContainer">
+                        <h4 class="text-center mb-2">Résultat de la classification</h4>
+                        <p id="clusterResult" class="text-center mb-2">Complétez le formulaire pour obtenir un résultat</p>
+                        <div class="text-center">
+                          <span id="clusterBadge" class="cluster-badge"></span>
+                        </div>
+                      </div>
+                      <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">
+                          <i class="fas fa-search me-2"></i>Analyser le produit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </section>
+
+        <!-- Recommendation Section -->
+        <section class="page-section" id="recommendation">
+            <div class="container">
+                <div class="text-center" data-aos="fade-down">
+                    <h2 class="section-heading text-uppercase">Système de Recommandation</h2>
+                    <h3 class="section-subheading text-muted">Découvrez des produits similaires basés sur votre recherche</h3>
+                </div>
+                
+                <div class="row justify-content-center" data-aos="fade-up">
+                    <div class="col-lg-10">
+                        <div class="form-card">
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label for="productInput" class="mb-1"><i class="fas fa-search me-2"></i>Nom du produit</label>
+                                    <div class="position-relative">
+                                        <input type="text" 
+                                            id="productInput" 
+                                            class="form-control form-control-lg"
+                                            placeholder="Entrez le nom du produit...">
+                                        <div id="typeaheadResults" class="typeahead-list"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <label for="recommendationCount" class="mb-1"><i class="fas fa-list-ol me-2"></i>Nombre</label>
+                                    <input type="number" 
+                                        id="recommendationCount" 
+                                        class="form-control form-control-lg"
+                                        value="5" 
+                                        min="1" 
+                                        max="10">
+                                </div>
+                                
+                                <div class="col-md-2">
+                                    <label class="d-block mb-1">&nbsp;</label>
+                                    <button id="recommendBtn" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-bolt me-2"></i>Rechercher
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loading" class="text-center my-5 spinner-container" style="display: none;">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;"></div>
+                    <p class="mt-3">Recherche en cours...</p>
+                </div>
+
+                <div id="resultsSection" class="mt-5" style="display: none;">
+                    <div data-aos="fade-up">
+                        <h4 class="mb-4 text-center">Produit recherché : <span id="searchedProduct" class="text-primary"></span></h4>
+                    </div>
+                    <div id="recommendationsContainer" class="row g-4" data-aos="fade-up" data-aos-delay="100"></div>
+                </div>
+
+                <div id="errorAlert" class="alert alert-danger mt-4" style="display: none;"></div>
+            </div>
+        </section>
+        
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- AOS Animation Library -->
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <!-- Core theme JS-->
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+        <!-- SB Forms JS-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+        <script>
+            // Initialize AOS animations
+            document.addEventListener('DOMContentLoaded', function() {
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-in-out',
+                    once: true,
+                    mirror: false
+                });
+
+                // Scroll effects for navbar
+                window.addEventListener('scroll', function() {
+                    const navbar = document.getElementById('mainNav');
+                    if (window.scrollY > 50) {
+                        navbar.style.padding = '10px 0';
+                        navbar.style.backgroundColor = 'rgba(33, 37, 41, 0.98)';
+                    } else {
+                        navbar.style.padding = '15px 0';
+                        navbar.style.backgroundColor = 'rgba(33, 37, 41, 0.95)';
+                    }
+                });
+            });
+
+            // Function to assign cluster badges and styling
+            function renameClusters(clusterLabel) {
+                let clusterName, badgeClass;
+                
+                if (clusterLabel === 0 || clusterLabel === 1) {
+                    clusterName = 'Produits avec bonne réputation';
+                    badgeClass = 'quality';
+                } else if (clusterLabel === 3) {
+                    clusterName = 'Top Produits Premium';
+                    badgeClass = 'premium';
+                } else if (clusterLabel === 2) {
+                    clusterName = 'Produits à faible qualité';
+                    badgeClass = 'low';
+                } else {
+                    clusterName = 'Inconnu';
+                    badgeClass = '';
+                }
+                
+                return { name: clusterName, class: badgeClass };
+            }
+        
+            // Handle cluster form submission
+            document.getElementById('clusterForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const payload = {
+                    product_name: document.getElementById('productName').value,
+                    Note: document.getElementById('Note').value,
+                    Prix: document.getElementById('Prix').value
+                };
+                
+                // Reset and show loading
+                document.getElementById('clusterResult').innerHTML = '<div class="spinner-border text-primary" style="width: 1.5rem; height: 1.5rem;"></div>';
+                document.getElementById('clusterBadge').style.display = 'none';
+                
+                fetch('/predict_cluster', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(resp => resp.json())
+                .then(data => {
+                    const resultContainer = document.getElementById('clusterResultContainer');
+                    const badgeEl = document.getElementById('clusterBadge');
+                    
+                    resultContainer.classList.remove('show');
+                    
+                    setTimeout(() => {
+                        if (data.cluster !== undefined) {
+                            const clusterInfo = renameClusters(data.cluster);
+                            document.getElementById('clusterResult').innerHTML = 
+                                '<strong>' + payload.product_name + '</strong> appartient à la catégorie :';
+                            
+                            badgeEl.textContent = clusterInfo.name;
+                            badgeEl.className = 'cluster-badge ' + clusterInfo.class;
+                            badgeEl.style.display = 'inline-block';
+                        } else {
+                            document.getElementById('clusterResult').innerHTML =
+                                '<span class="text-danger">Erreur : ' + (data.error || 'réponse invalide') + '</span>';
+                            badgeEl.style.display = 'none';
+                        }
+                        
+                        resultContainer.classList.add('show');
+                    }, 500);
+                })
+                .catch(err => {
+                    document.getElementById('clusterResult').innerHTML =
+                        '<span class="text-danger">Erreur lors de la requête : ' + err + '</span>';
+                    document.getElementById('clusterBadge').style.display = 'none';
+                });
+            });
+
+            // Recommendation system scripts
+            const productInput = document.getElementById('productInput');
+            const typeaheadResults = document.getElementById('typeaheadResults');
+            let currentRequest = null;
+
+            // Enhanced typeahead with debounce
+            const debounce = (func, delay) => {
+                let timer;
+                return function(...args) {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        func.apply(this, args);
+                    }, delay);
+                };
+            };
+
+            const performSearch = debounce(async (query) => {
+                if (query.length < 2) {
+                    typeaheadResults.style.display = 'none';
+                    return;
+                }
+
+                if (currentRequest) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = new AbortController();
+                
+                try {
+                    // Show loading indicator inside input
+                    const spinnerHTML = '<div class="spinner-border spinner-border-sm text-primary" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%);"></div>';
+                    if (!document.querySelector('#productInputSpinner')) {
+                        productInput.insertAdjacentHTML('afterend', spinnerHTML);
+                    }
+                    
+                    const response = await fetch('/search-products', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ query }),
+                        signal: currentRequest.signal
+                    });
+                    
+                    // Remove spinner
+                    const spinner = document.querySelector('#productInputSpinner');
+                    if (spinner) spinner.remove();
+                    
+                    const results = await response.json();
+                    showTypeahead(results);
+                } catch (err) {
+                    // Remove spinner on error
+                    const spinner = document.querySelector('#productInputSpinner');
+                    if (spinner) spinner.remove();
+                    
+                    if (err.name !== 'AbortError') {
+                        console.error('Erreur de recherche :', err);
+                    }
+                }
+            }, 300);
+
+            productInput.addEventListener('input', (e) => {
+                performSearch(e.target.value.toLowerCase());
+            });
+
+            function showTypeahead(results) {
+                if (results.length === 0) {
+                    typeaheadResults.style.display = 'none';
+                    return;
+                }
+                
+                typeaheadResults.innerHTML = results
+                    .map(product => `
+                        <div class="typeahead-item" data-name="${product.name}">
+                            <i class="fas fa-tag me-2 text-muted"></i>${product.name}
+                        </div>
+                    `).join('');
+                
+                typeaheadResults.style.display = 'block';
+                
+                document.querySelectorAll('.typeahead-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        productInput.value = item.dataset.name;
+                        typeaheadResults.style.display = 'none';
+                    });
+                });
+            }
+
+            // Close typeahead when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#productInput') && !e.target.closest('#typeaheadResults')) {
+                    typeaheadResults.style.display = 'none';
+                }
+            });
+
+            document.getElementById('recommendBtn').addEventListener('click', async () => {
+                const productName = productInput.value.trim();
+                const topN = document.getElementById('recommendationCount').value;
+
+                if (!productName) {
+                    showError('Veuillez entrer un nom de produit');
+                    return;
+                }
+
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('errorAlert').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'none';
+
+                try {
+                    const response = await fetch('/recom', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            product_name: productName,
+                            top_n: topN
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        document.getElementById('searchedProduct').textContent = data.input_product;
+                        displayRecommendations(data.recommendations);
+                        
+                        // Use setTimeout to create a delay effect
+                        setTimeout(() => {
+                            document.getElementById('resultsSection').style.display = 'block';
+                            setTimeout(() => {
+                                document.getElementById('resultsSection').classList.add('show');
+                            }, 100);
+                        }, 300);
+                    } else {
+                        showError(data.message || 'Erreur lors de la recherche');
+                    }
+                } catch (error) {
+                    showError('Erreur de connexion au serveur');
+                } finally {
+                    document.getElementById('loading').style.display = 'none';
+                }
+            });
+
+            function displayRecommendations(recommendations) {
+                const container = document.getElementById('recommendationsContainer');
+                container.innerHTML = '';
+                
+                // Add recommendations with delay for staggered animation
+                recommendations.forEach((rec, index) => {
+                    setTimeout(() => {
+                        const card = document.createElement('div');
+                        card.className = 'col-md-4 mb-4';
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        card.style.transition = 'all 0.4s ease';
+                        
+                        card.innerHTML = `
+                            <div class="card h-100 shadow-sm recommendation-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">${rec['Nom du produit']}</h5>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span><i class="fas fa-euro-sign me-2"></i>Prix :</span>
+                                        <span class="text-primary fw-bold">${rec.Prix} €</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-star me-2"></i>Note :</span>
+                                        <div>
+                                            <span class="badge bg-success p-2">${rec.Note}/5</span>
+                                            ${getStarRating(rec.Note)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        container.appendChild(card);
+                        
+                        // Trigger animation after a small delay
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 50);
+                    }, index * 100);
+                });
+            }
+
+            function getStarRating(rating) {
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 >= 0.5;
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                
+                let starsHTML = '';
+                
+                // Full stars
+                for (let i = 0; i < fullStars; i++) {
+                    starsHTML += '<i class="fas fa-star text-warning"></i>';
+                }
+                
+                // Half star
+                if (halfStar) {
+                    starsHTML += '<i class="fas fa-star-half-alt text-warning"></i>';
+                }
+                
+                // Empty stars
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHTML += '<i class="far fa-star text-warning"></i>';
+                }
+                
+                return `<div class="mt-2">${starsHTML}</div>`;
+            }
+
+            function showError(message) {
+                const errorDiv = document.getElementById('errorAlert');
+                errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>${message}`;
+                errorDiv.style.display = 'block';
+                
+                // Scroll to error
+                errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                        errorDiv.style.opacity = '1';
+                    }, 500);
+                }, 5000);
+            }
+        </script>
+    </body>
+</html>
